@@ -32,23 +32,24 @@
             var err=0;
 			/**
 			 * Library of common types of form validation
+			 * @private
 			 * @param {Object} value - the numeric value in the case of max/min or boolean "true" in most other cases for testing against.
 			 * @param {Object} term - the form field value to be tested
 			 */
             var checkLib = {
                 max: function(value,term){
                     value=parseInt(value);
-                    SJ.log('max',value,term,' return value: '+(term.length<=value))
+                    //SJ.log('max',value,term,' return value: '+(term.length<=value))
                     return(term.length<=value)
                 },
                 min:function(value,term){
                     value=parseInt(value);
-                    SJ.log(term.length,'term length')
-                    SJ.log('min',value,term,' return value: '+(term.length>=value))
+                    //SJ.log(term.length,'term length')
+                    //SJ.log('min',value,term,' return value: '+(term.length>=value))
                     return(term.length>=value)
                 },
                 mandatory:function(value,term){
-                    SJ.log('mandatory',value,' return value: '+((term == true) || (term.length>0)))
+                    //SJ.log('mandatory',value,' return value: '+((term == true) || (term.length>0)))
                     return ((term == true) || (term != true && term.length>0))
                 },
                 tel:function(value,term){
@@ -73,29 +74,36 @@
                     return regexp.test(value);
                 }
             }
+			/**
+			 * Library of form field types. To be finished.
+			 * @private
+			 */
             var typeLib = {
                 checkbox:function(obj){
-                    SJ.log('checkbox: ',obj.checked)
+                    //SJ.log('checkbox: ',obj.checked)
                     return obj.checked
                 },
                 text:function(obj){
-                    SJ.log('text: ',obj.value)
+                    //SJ.log('text: ',obj.value)
                     return obj.value
                 }
             }
+			/**
+			 * Main function
+			 */
 			var l=obj.length
             while(l--){
                 for (var n in checkLib) {
                     if(obj[l].valObj[n]){
-                        SJ.log("-------- iteration "+l+ ' sub '+n+', check type '+n,' field type: ',obj[l].field.type,' Typelib is returning: ',typeLib[obj[l].field.type](obj[l].field))
+                        //SJ.log("-------- iteration "+l+ ' sub '+n+', check type '+n,' field type: ',obj[l].field.type,' Typelib is returning: ',typeLib[obj[l].field.type](obj[l].field))
                         if (!checkLib[n](obj[l].valObj[n], typeLib[obj[l].field.type](obj[l].field))) {
                             returnObj[err] = {
                                 field:obj[l].field,
                                 errorText:obj[l].valObj[n+'Text']
                                 }
                             err++;
-                            SJ.log(obj[l].valObj[n+'Text'])
-                            SJ.log("-------- iteration "+l+ ' sub '+n+' errored');
+                            //SJ.log(obj[l].valObj[n+'Text'])
+                            //SJ.log("-------- iteration "+l+ ' sub '+n+' errored');
                         }
                     }
                 }
