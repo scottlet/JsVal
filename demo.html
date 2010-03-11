@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Validator demo</title>
+		<script src="JsVal.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var $ = function(n){return document.getElementById(n)}
+			function validate(){
+				SJ.log('validating')
+				// validation objects.
+				var nm = {
+					mandatory: true,
+					mandatoryText: 'Please enter your name'
+				}
+				var tel = {
+					mandatory: true,
+					mandatoryText: 'Please enter your telephone number',
+					tel: true,
+					telText: 'That doesn\'t look like a telephone number'
+				}
+				var mail = {
+					mandatory: true,
+					mandatoryText: 'Please enter your email address',
+					email: true,
+					emailText: 'That doesn\'t look like an email address'
+				}
+				var url = {
+					mandatory: true,
+					mandatoryText: 'Please enter your website URL',
+					url: true,
+					urlText: 'That doesn\'t look like an URL, make sure you include the http(s):// at the start'
+				}
+				var maxmin = {
+					min: 10,
+					max: 30,
+					minText: 'Please enter at least 10 characters',
+					maxText: 'Please enter no more than 30 characters'
+				}
+				var valResult = SJ.validate([{
+					field: $('name'),
+					valObj: nm
+				}, {
+					field: $('tel'),
+					valObj: tel
+				}, {
+					field: $('mail'),
+					valObj: mail
+				}, {
+					field: $('url'),
+					valObj: url
+				}, {
+					field: $('desc'),
+					valObj: maxmin
+				}]);
+				if (valResult[0] && valResult[0].noerrors) {
+					$('success').innerHTML = "No errors"
+				}
+				else {
+					var l = valResult.length;
+					while (l--) {
+						$(valResult[l].field.id + 'Text').innerHTML += valResult[l].errorText+ ' ';
+						valResult[l].field.style.border = '2px inset red';
+					}
+				}
+				return false;
+			}
+		</script>
+	</head>
+	<body>
+		<h1>Validator demo</h1>
+		<p id="success"></p>
+		<form onsubmit="return validate()" method="post" action="#">
+			<p>
+				<input type="text" value="" id="name"> <label for="name">Name (mandatory)</label> <span id="nameText"></span><br />
+				<input type="text" value="" id="tel"> <label for="tel">Phone number (mandatory)</label><span id="telText"></span><br />
+				<input type="email" value="" id="mail"> <label for="mail">email (mandatory)</label><span id="mailText"></span><br />
+				<input type="text" value="http://" id="url"> <label for="url">url (mandatory)</label><span id="urlText"></span><br />
+				<input type="text" value="" id="desc"> <label for="desc">Short description (between 10-30 characters)</label><span id="descText"></span><br />
+				<input type="submit" value="Submit">
+			</p>
+		</form>
+	</body>
+</html>
